@@ -1,0 +1,14 @@
+DerivedData/
+**/.xcworkspace
+**/.xcuserstate
+
+**/.build/
+Packages/
+.swiftpm/
+
+**/.DS_Store
+
+**/.preview-thumbnails
+
+**/.xcuserdatad/
+**/.xcuserdata/
