@@ -1,14 +1,19 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            Tab("Add Sleep", systemImage: "plus.app"){
+                SleepAddingView()
+            }
+            Tab("Last Sleep", systemImage: "bed.double.fill"){
+                LastSleepView()
+            }
+            Tab("Analitics", systemImage: "chart.xyaxis.line"){
+                AnaliticsView()
+            }
         }
-        .padding()
     }
 }
 
