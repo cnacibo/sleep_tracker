@@ -19,4 +19,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: SleepSession.self, inMemory: true)
 }
