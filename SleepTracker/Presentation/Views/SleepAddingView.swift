@@ -22,29 +22,51 @@ struct SleepAddingView: View {
     
     
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             ZStack {
                 Form {
-                    DatePicker("Sleep Start", selection: $sleepStart)
-                    DatePicker("Sleep End", selection: $sleepEnd)
-                    Picker("Sleep Score", selection: $score){
-                        ForEach(1...5, id: \.self) { value in
-                            Text("\(value)").tag(value)
+                    Section(header: Text("Sleep Time").font(.headline)) {
+                        DatePicker("Start", selection: $sleepStart)
+                        DatePicker("End", selection: $sleepEnd)
+                    }
+                    
+                    Section(header: Text("Sleep Quality").font(.headline)) {
+                        
+                        HStack {
+                            Text("Score")
+                            Spacer()
+                            Picker("Sleep Score", selection: $score){
+                                ForEach(1...5, id: \.self) { value in
+                                    Text("\(value)").tag(value)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(width: 180)
                         }
                     }
-                        
-                    TextField("Additional information", text: $info)
+                    
+                    Section(header: Text("Notes").font(.headline)) {
+                        TextField("Additional information", text: $info)
+                    }
+                    
                     Section {
-                        Button("Save", systemImage: "square.and.arrow.down.fill", action: AddSession)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding()
-                            .background(Color.orange)
-                            .cornerRadius(10)
+                        Button(action: AddSession) {
+                            HStack {
+                                Spacer()
+                                Label("Save", systemImage: "square.and.arrow.down.fill")
+                                    .font(.headline)
+                                Spacer()
+                            }
+                            .padding(.vertical, 15)
+
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(Color.blue.gradient)
+                        .foregroundColor(.white)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
                     }
                 }
-                .padding()
-                
             }
             .navigationTitle("New Sleep Session")
             .alert(alertTitle, isPresented: $showAlert) {

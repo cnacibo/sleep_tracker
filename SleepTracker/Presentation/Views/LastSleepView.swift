@@ -7,22 +7,74 @@ struct LastSleepView: View {
     private var sessions: [SleepSession]
     
     var body: some View {
-        NavigationStack{
-            VStack{
+        NavigationStack {
+            ZStack {
                 if let session = sessions.last {
-                    Text("🛌 Длительность сна: \(session.duration.hours)ч \(session.duration.minutes)м")
-                    Text("💤 Оценка сна: \(session.score)")
-                    if let info = session.information {
-                        Text("📝 \(info)")
+                    VStack(alignment: .leading, spacing: 16) {
+                        
+                        HStack(alignment: .top) {
+                            Image(systemName: "bed.double.fill")
+                                .foregroundColor(.blue)
+                                .frame(width: 24)
+                            VStack(alignment: .leading) {
+                                Text("Sleep time")
+                                    .foregroundColor(.secondary)
+                                    .font(.caption)
+                                Text("\(session.duration.hours)ч \(session.duration.minutes)м")
+                                    .font(.body)
+                            }
+                        }
+                        
+                        HStack(alignment: .top) {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.blue)
+                                .frame(width: 24)
+                            VStack(alignment: .leading) {
+                                Text("Rating")
+                                    .foregroundColor(.secondary)
+                                    .font(.caption)
+                                Text(String(repeating: "⭐️", count: session.score))
+                                    .font(.body)
+                            }
+                        }
+                        if let info = session.information, !info.isEmpty {
+                            HStack(alignment: .top) {
+                                Image(systemName: "note.text")
+                                    .foregroundColor(.blue)
+                                    .frame(width: 24)
+                                VStack(alignment: .leading) {
+                                    Text("Notes")
+                                        .foregroundColor(.secondary)
+                                        .font(.caption)
+                                    Text(info)
+                                        .font(.body)
+                                }
+                            }
+                        }
+                        Spacer()
                     }
+                    .padding(30)
+                    
                 } else {
-                    ProgressView("Загрузка...")
+                    VStack {
+                        Image(systemName: "moon.zzz")
+                            .font(.system(size: 48))
+                            .foregroundColor(.secondary)
+                        Text("No sleep data")
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                        Text("Add your first sleep data")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
                 }
+                
             }
-            .navigationTitle("Last Sleep Data")
+            .navigationTitle("Last Sleep")
         }
         
     }
+       
 }
 
 #Preview {
