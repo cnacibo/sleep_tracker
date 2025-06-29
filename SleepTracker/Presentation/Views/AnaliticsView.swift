@@ -4,7 +4,7 @@ import SwiftData
 struct AnaliticsView: View {
 
     @Query(sort: \SleepSession.sleepStart, order: .reverse)
-    private var sessions: [SleepSession]
+    private var sessions: [SleepSession] 
     
     var averageScore: Float {
         let lastWeekSessions = sessions.filter { session in

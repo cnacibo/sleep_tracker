@@ -8,7 +8,7 @@ struct SleepAddingView: View {
     
     @State private var sleepStart: Date = .now
     @State private var sleepEnd: Date = .now
-    @State private var score: String = ""
+    @State private var score: Int = 3
     @State private var info: String = ""
     
     @State private var showAlert: Bool = false
@@ -27,17 +27,23 @@ struct SleepAddingView: View {
                 Form {
                     DatePicker("Sleep Start", selection: $sleepStart)
                     DatePicker("Sleep End", selection: $sleepEnd)
-                    TextField("Sleep Score", text: $score)
-                        .keyboardType(.numberPad)
+                    Picker("Sleep Score", selection: $score){
+                        ForEach(1...5, id: \.self) { value in
+                            Text("\(value)").tag(value)
+                        }
+                    }
+                        
                     TextField("Additional information", text: $info)
+                    Section {
+                        Button("Save", systemImage: "square.and.arrow.down.fill", action: AddSession)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding()
+                            .background(Color.orange)
+                            .cornerRadius(10)
+                    }
                 }
-                
-                Button("Save", systemImage: "square.and.arrow.down.fill", action: AddSession)
-                    .padding(12)
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .frame(maxWidth: .infinity)
+                .padding()
                 
             }
             .navigationTitle("New Sleep Session")
@@ -61,7 +67,7 @@ struct SleepAddingView: View {
                 notes: info)
             sleepStart = .now
             sleepEnd = .now
-            score = ""
+            score = 3
             info = ""
             showAlert("Ваша запись успешно сохранена!", "")
         } catch SleepValidationError.invalidScoreFormat {

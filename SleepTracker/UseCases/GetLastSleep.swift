@@ -13,7 +13,7 @@ struct GetLastSleepUseCase {
     }
     
     func execute() throws -> SleepSummary? {
-        guard let lastSleep = try repository.GetLastSleepSession() else {
+        guard let lastSleep = try repository.getLastSleepSession() else {
             throw GettingLastSleepError.sleepSessionsEmpty
         }
         

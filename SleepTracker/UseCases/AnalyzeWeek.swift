@@ -8,7 +8,7 @@ struct AnalyzeWeekUseCase {
     }
     
     func getAverageScore() async throws -> Float {
-        let weekSleep = try repository.GetLastWeekSleep()
+        let weekSleep = try repository.getLastWeekSleep()
         var averageScore: Float = 0.0
         let validSleeps = weekSleep.compactMap { $0 }
         

@@ -13,20 +13,17 @@ struct AddSleepUseCase {
         self.repository = repository
     }
     
-    func execute(startTime: Date, endTime: Date, score: String, notes: String) throws {
-        guard let scoreValue = Int(score) else {
-            throw SleepValidationError.invalidScoreFormat
-        }
-        
-        guard (1...5).contains(scoreValue) else {
-            throw SleepValidationError.scoreOutOfRange
-        }
-        
+    func execute(startTime: Date, endTime: Date, score: Int, notes: String) throws {
         guard startTime < endTime else {
             throw SleepValidationError.invalidTimeRange
         }
         
-        let session = SleepSession(sleepStart: startTime, sleepEnd: endTime, score: scoreValue, information: notes)
-        try repository.AddSleepSession(session)
+        let session = SleepSession(
+            sleepStart: startTime,
+            sleepEnd: endTime,
+            score: score,
+            information: notes)
+        
+        try repository.addSleepSession(session)
     }
 }

@@ -2,9 +2,9 @@ import SwiftData
 import Foundation
 
 protocol SleepRepositoryProtocol {
-    func AddSleepSession(_ session: SleepSession) throws
-    func GetLastSleepSession() throws -> SleepSession?
-    func GetLastWeekSleep() throws -> [SleepSession?]
+    func addSleepSession(_ session: SleepSession) throws
+    func getLastSleepSession() throws -> SleepSession?
+    func getLastWeekSleep() throws -> [SleepSession]
 }
 
 final class SleepRepository : SleepRepositoryProtocol {
@@ -14,11 +14,12 @@ final class SleepRepository : SleepRepositoryProtocol {
         self.context = context
     }
     
-    func AddSleepSession(_ session: SleepSession) throws {
+    func addSleepSession(_ session: SleepSession) throws {
         context.insert(session)
+        try context.save()
     }
     
-    func GetLastSleepSession() throws -> SleepSession? {
+    func getLastSleepSession() throws -> SleepSession? {
         var descriptor = FetchDescriptor<SleepSession> (
             sortBy: [SortDescriptor(\SleepSession.sleepStart, order: .reverse)]
         )
@@ -29,7 +30,7 @@ final class SleepRepository : SleepRepositoryProtocol {
         return sessions.first
     }
     
-    func GetLastWeekSleep() throws -> [SleepSession?] {
+    func getLastWeekSleep() throws -> [SleepSession] {
         var descriptor = FetchDescriptor<SleepSession> (
             sortBy: [SortDescriptor(\SleepSession.sleepStart, order: .reverse)]
         )
