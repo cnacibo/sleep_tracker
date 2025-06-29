@@ -10,8 +10,8 @@ struct ContentView: View {
             Tab("Last Sleep", systemImage: "bed.double.fill"){
                 LastSleepView()
             }
-            Tab("Analitics", systemImage: "chart.xyaxis.line"){
-                AnaliticsView()
+            Tab("Analytics", systemImage: "chart.xyaxis.line"){
+                AnalyticsView()
             }
         }
     }
