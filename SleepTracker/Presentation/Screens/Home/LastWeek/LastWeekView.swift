@@ -4,44 +4,15 @@ import Charts
 
 struct LastWeekView: View {
     let sessions: [SleepSession]
+    private let lastWeekData: LastWeekDataProtocol
     
-    private var lastWeekDateRange: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d"
-        
-        guard let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()),
-              let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()) else {
-            return ""
-        }
-        
-        let startDate = formatter.string(from: weekAgo)
-        let endDate = formatter.string(from: yesterday)
-        
-        return "\(startDate) - \(endDate)"
+    init(sessions: [SleepSession], lastWeekData: LastWeekDataProtocol = LastWeekDataUseCase()) {
+        self.sessions = sessions
+        self.lastWeekData = lastWeekData
     }
     
     private var lastWeekSessions: [DailySleepDuration] {
-        guard let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else {
-            return []
-        }
-        
-        // Фильтруем сессии за последнюю неделю
-        let filtered = sessions.filter { $0.sleepStart >= weekAgo }
-        
-        // Группируем по дням
-        let grouped = Dictionary(grouping: filtered) { session in
-            Calendar.current.startOfDay(for: session.sleepStart)
-        }
-        
-        // Преобразуем в массив DailySleepData
-        return grouped.map { date, sessions in
-            let totalDuration = sessions.reduce(0) { $0 + $1.sleepEnd.timeIntervalSince($1.sleepStart) }
-            return DailySleepDuration(
-                date: date,
-                duration: totalDuration
-            )
-        }
-        .sorted { $0.date < $1.date }
+        lastWeekData.calculateLastWeekSleepDuration(sessions: sessions)
     }
     
     var body: some View {
@@ -51,7 +22,8 @@ struct LastWeekView: View {
                     .foregroundColor(.indigo)
                 Text("Last Week")
                     .font(.title2.bold())
-                Text(lastWeekDateRange)
+                Text(lastWeekData.getLastWeekDateRange())
+                    .foregroundColor(.secondary)
             }
             if !lastWeekSessions.isEmpty {
                 Chart {
@@ -60,7 +32,7 @@ struct LastWeekView: View {
                             x: .value("Day", data.date, unit: .day),
                             y: .value("Hours", data.duration / 3600)
                         )
-                        .foregroundStyle(.indigo)
+                        .foregroundStyle(.indigo.opacity(0.8))
                         .annotation(position: .top) {
                             Text("\(String(format: "%.1f", data.duration / 3600))h")
                                 .font(.system(size: 10))
@@ -94,6 +66,14 @@ struct LastWeekView: View {
 }
 
 #Preview {
+    var sessions: [SleepSession] = []
+    
+
+    return LastWeekView(sessions: sessions)
+        .modelContainer(try! ModelContainer(for: SleepSession.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true)))
+}
+
+#Preview("With data") {
     var sessions: [SleepSession] = []
     
     // Генерируем данные за последние 7 дней
