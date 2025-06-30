@@ -26,4 +26,24 @@ class SleepSession {
             minutes: components.minute ?? 0
         )
     }
+    
+    var phases: (deep: Int, rem: Int, awake: Int, light: Int) {
+        let totalMinutes = Calendar.current.dateComponents([.minute], from: sleepStart, to: sleepEnd).minute ?? 0
+        
+        guard totalMinutes > 0 else {
+            return (0, 0, 0, 0)
+        }
+        
+        let deepSleep = Int(Double(totalMinutes) * 0.25)
+        let remSleep = Int(Double(totalMinutes) * 0.3)
+        let lightSleep = Int(Double(totalMinutes) * 0.36)
+        let awakeSleep = totalMinutes - deepSleep - remSleep - lightSleep
+        
+        return (
+            deep: max(deepSleep, 0),
+            rem: max(remSleep, 0),
+            awake: max(awakeSleep, 0),
+            light: max(lightSleep, 0)
+        )
+    }
 }
