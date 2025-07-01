@@ -23,6 +23,7 @@ struct HomeView: View {
                 
             }
             .background(Color(.systemGroupedBackground))
+            .navigationTitle("Home page")
         }
         
     }
