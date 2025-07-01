@@ -93,15 +93,15 @@ struct SleepAddingView: View {
             sleepEnd = .now
             score = 3
             info = ""
-            showAlert("Ваша запись успешно сохранена!", "")
+            showAlert("Success!", "")
         } catch SleepValidationError.invalidScoreFormat {
-            showAlert("Ошибка", "Введите число от 1 до 5")
+            showAlert("Error", "Score must be a number from 1 to 5")
         } catch SleepValidationError.scoreOutOfRange {
-            showAlert("Ошибка", "Оценка должна быть от 1 до 5")
+            showAlert("Error", "Score must be from 1 to 5")
         } catch SleepValidationError.invalidTimeRange {
-            showAlert("Ошибка", "Время начала сна должно быть раньше окончания")
+            showAlert("Error", "Start time must be before End time")
         } catch {
-            showAlert("Ошибка", "Не удалось сохранить: \(error.localizedDescription)")
+            showAlert("Error", "Failed to save data: \(error.localizedDescription)")
         }
     }
     
