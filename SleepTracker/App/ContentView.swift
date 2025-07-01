@@ -2,11 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    let gradientColors: [Color] = [
-        .gradientTop,
-        .gradientBottom
-    ]
-
+    
     var body: some View {
         TabView {
             Tab("Add Sleep", systemImage: "plus.app"){
