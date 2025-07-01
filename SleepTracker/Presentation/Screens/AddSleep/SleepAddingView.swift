@@ -23,7 +23,7 @@ struct SleepAddingView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack {Color("AccentColor")
                 Form {
                     Section(header: Text("Sleep Time").font(.headline)) {
                         DatePicker("Start", selection: $sleepStart)
@@ -57,12 +57,14 @@ struct SleepAddingView: View {
                                     .font(.headline)
                                 Spacer()
                             }
-                            .padding(.vertical, 15)
-
+                            .padding(.vertical, 17)
+                            .background(LinearGradient(
+                                colors: [.indigo.opacity(0.2), .teal.opacity(0.2)],
+                                startPoint: .leading,
+                                endPoint: .trailing))
+                            .foregroundColor(.indigo)
+                            
                         }
-                        .buttonStyle(.borderedProminent)
-                        .tint(Color.blue.gradient)
-                        .foregroundColor(.white)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets())
                     }
